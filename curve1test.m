@@ -1,6 +1,6 @@
 clear clc
 close all
-RGB = imread('inferiort1ejemplo.jpg');
+RGB = imread('Max_3M_tapered.png');
 
 level=graythresh(RGB);
 
@@ -48,8 +48,8 @@ centro = find(X == meanx);
 centromean= round(mean(centro));
 
 
-n = 2:8;
-fib= fibonacci(n)*7;
+n = 2:7;
+fib= fibonacci(n)*9;
 
 fibneg= centromean - fib;
 fibpos= centromean + fib;
