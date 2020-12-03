@@ -2,11 +2,21 @@ clear clc
 close all
 RGB = imread('inferiort1ejemplo.jpg');
 
-level=0.7;
+level=graythresh(RGB);
 
-BW = im2bw(RGB,level);
 
-BW = imrotate(BW,90);
+
+BW = im2bw(RGB,level); %#ok<IM2BW>
+
+Icomplement = imcomplement(BW);
+
+BWskel = bwskel(Icomplement);
+
+BWskel = imcomplement(BWskel)
+
+BW = imrotate(BWskel,90);
+
+
 
 [m n] =size(BW);
 
@@ -31,20 +41,20 @@ end
 
 Minx=min(X);
 Maxx=max(X);
-meanx=(Minx+Maxx)/2;
+meanx= round((Minx+Maxx)/2);
 
 centro = find(X == meanx);
 
 centromean= round(mean(centro));
 
 
-n = 7:15;
-fib= fibonacci(n);
+n = 2:8;
+fib= fibonacci(n)*7;
 
 fibneg= centromean - fib;
 fibpos= centromean + fib;
 
-fibo=[fibneg fibpos];
+fibo=[fibneg  centromean   fibpos];
 
 XX=X(fibo);
 YY=Y(fibo);
