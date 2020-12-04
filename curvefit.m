@@ -100,9 +100,9 @@ XX=X(fibo);
 YY=Y(fibo);
 [fitresult, gof] =createFits(XX, YY);
 
-for i=1:7
-    model=fitresult{i}
-end
+% for i=1:7
+%     model=fitresult{i}
+% end
 
 cd arch_orthoaid
 
