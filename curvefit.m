@@ -1,10 +1,10 @@
 clear clc
 close all
 
-cd images-3M
+% cd images-3M
 
 % name='Max_3M_tapered.png';
-name='Max_3M_ovoid.png';
+% name='Max_3M_ovoid.png';
 % name= 'Max_3M_square.png';
 
 
@@ -12,12 +12,31 @@ name='Max_3M_ovoid.png';
 % name='Man_3M_ovoid.png';
 % name= 'Man_3M_square.png';
 
+cd arch_orthoaid
+
+% name = 'max_5_61.52.bmp';
+% name = 'max_4_58.78.bmp';
+% name = 'max_3_57.00.bmp';
+% name = 'max_2_64.78.bmp';
+% name = 'max_1_64.00.bmp';
+% 
+
+% name = 'man_5_55.16.bmp';
+% name = 'man_4_55.34.bmp';
+% name = 'man_3_56.22.bmp';
+% name = 'man_2_60.34.bmp';
+% name = 'man_1_56.52.bmp';
+name = 'copy_JD_man_1_56.52.png'
+
+
+
 RGB = imread(name);
 
 
 cd ..\
 
 level=graythresh(RGB);
+% level=0; % para orthoaaid dilatar o no usar umbral
 
 
 
@@ -85,7 +104,7 @@ for i=1:7
     model=fitresult{i}
 end
 
-cd images-3M
+cd arch_orthoaid
 
 s1 = 'fitresult.mat';
 s2 = name;
