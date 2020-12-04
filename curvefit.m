@@ -4,9 +4,13 @@ close all
 cd images-3M
 
 % name='Max_3M_tapered.png';
-% name='Max_3M_ovoid.png';
+name='Max_3M_ovoid.png';
 % name= 'Max_3M_square.png';
 
+
+% name='Man_3M_tapered.png';
+% name='Man_3M_ovoid.png';
+% name= 'Man_3M_square.png';
 
 RGB = imread(name);
 

@@ -1,6 +1,6 @@
 clear clc
 close all
-RGB = imread('Max_3M_tapered.png');
+RGB = imread('Max_3M_ovoid.png');
 
 level=graythresh(RGB);
 
