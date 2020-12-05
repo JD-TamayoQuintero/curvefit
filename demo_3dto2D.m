@@ -56,19 +56,10 @@ EDT=zeros(m,n);
 
 EDT(1:m,n/4:n/1.33)=  tempDT(1:m,n/4:n/1.33);
 
-
-
 [Xli, Yli]=XYpoints(EDT,255);
 
 
-% [r,m,b] = regression(X,Y);
-% 
-% A=Y\X;
-
 b1 = Yli\Xli;
-
-
-% p = polyfit(Xli,Yli,1);
 
 
     if b1<0.0
@@ -109,6 +100,19 @@ newimage0=  imrotate(newimage0,-90);
 [MEDTX, MEDTY]=XYpoints(newimage0,255);
 
 [MEDTX, MEDTY] = XYpointscale(MEDTX, MEDTY);
+
+
+MEDTX= round(MEDTX);
+MEDTY= round(MEDTY);
+
+
+%% 
+[points] = XYpointcurveselection(MEDTY);
+
+%%
+% 
+MEDTX=MEDTX(points);
+MEDTY=MEDTY(points);
 % 
 % 
 
