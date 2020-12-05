@@ -117,7 +117,7 @@ MEDTY=MEDTY(points);
 % 
 
 % %% Fit: 'fourier-10coe'.
-[xData, yData] = prepareCurveData( MEDTX, MEDTY);
+% [xData, yData] = prepareCurveData( MEDTX, MEDTY);
 % 
 % % Set up fittype and options.
 % ft = fittype( 'fourier4' );
@@ -133,23 +133,23 @@ MEDTY=MEDTY(points);
 % figure( 'Name', 'fourier-10coe' );
 % 
 % Plot fit with data.
-subplot( 2, 1, 1 );
-h = plot( fitresult{1}, xData, yData );
-legend( h, 'YY vs. XX', 'fourier-10coe', 'Location', 'NorthEast', 'Interpreter', 'none' );
-% Label axes
-xlabel( 'XX', 'Interpreter', 'none' );
-ylabel( 'YY', 'Interpreter', 'none' );
-grid on
-
-% Plot residuals.
-subplot( 2, 1, 2 );
-h = plot( fitresult{1}, xData, yData, 'residuals' );
-legend( h, 'fourier-10coe - residuals', 'Zero Line', 'Location', 'NorthEast', 'Interpreter', 'none' );
-% Label axes
-xlabel( 'XX', 'Interpreter', 'none' );
-ylabel( 'YY', 'Interpreter', 'none' );
-grid on
-
+% subplot( 2, 1, 1 );
+% h = plot( fitresult{1}, xData, yData );
+% legend( h, 'YY vs. XX', 'fourier-10coe', 'Location', 'NorthEast', 'Interpreter', 'none' );
+% % Label axes
+% xlabel( 'XX', 'Interpreter', 'none' );
+% ylabel( 'YY', 'Interpreter', 'none' );
+% grid on
+% 
+% % Plot residuals.
+% subplot( 2, 1, 2 );
+% h = plot( fitresult{1}, xData, yData, 'residuals' );
+% legend( h, 'fourier-10coe - residuals', 'Zero Line', 'Location', 'NorthEast', 'Interpreter', 'none' );
+% % Label axes
+% xlabel( 'XX', 'Interpreter', 'none' );
+% ylabel( 'YY', 'Interpreter', 'none' );
+% grid on
+% 
 
 
 
