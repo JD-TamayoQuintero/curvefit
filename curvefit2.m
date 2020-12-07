@@ -3,7 +3,7 @@ close all
 
  cd images-3M
 
-% name='Max_3M_tapered.png';
+name='Max_3M_tapered.png';
 % name='Max_3M_ovoidV2.png';
 % name= 'Max_3M_square.png';
 % 
@@ -67,7 +67,7 @@ Y= round(Y);
 max_XXsqu=X(points);
 max_YYsqu=Y(points);
 % 
-% [fitresult, gof] =createFits(XX, YY);
+[fitresult, gof] =createFits(max_XXsqu, max_YYsqu);
 
 
 

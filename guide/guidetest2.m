@@ -60,7 +60,10 @@ guidata(hObject, handles);
 % This sets up the initial plot - only do when we are invisible
 % so window can get raised using guidetest2.
 if strcmp(get(hObject,'Visible'),'off')
-    plot(rand(5));
+    plot(handles.axes1,0,0);
+    plot(handles.axes2,0,0);
+    plot(handles.axes3,0,0);
+    plot(handles.axes4,0,0);
 end
 
 % UIWAIT makes guidetest2 wait for user response (see UIRESUME)
@@ -87,21 +90,82 @@ cla;
 
 popup_sel_index = get(handles.popupmenu1, 'Value');
 switch popup_sel_index
-    case 1
+    case 1   %Mandibular(poly6)
         
-        A= 0;
-        if A == 0;
-        A = uigetfile('*.ply;*.pcd;');
-        A=pcread(A);
+        
+        model = uigetfile('*.ply;*.pcd;');
+        if ~isequal(model, 0)
+        A=pcread(model);
         pcshow(A);
+        
+        xi=A.Location(:,1);
+        yi=A.Location(:,2);
+        zi=A.Location(:,3);
+        
+        minzi=min(zi); zi= minzi-zi;
+        maxzi=max(zi); zi= maxzi-zi;
+        
+        Image = range3Dto2D( xi,yi,zi, 0.5);
+        Image=im2double(Image); Imagenor = normalizar(Image);
+        imshow(Imagenor, 'Parent', handles.axes8); % imagen de rango
+        colormap('jet');
+        level=0.7; % para orthoada dilatar o no usar umbral
+
+        BW = im2bw(Imagenor,level); %#ok<IM2BW>
+%       BW = imrotate(BW,-90);
+        imshow(BW, 'Parent', handles.axes9);
+%       BW1= imcomplement(BW);
+        DT= bwdist((BW));
+        DTnor=normalizar(DT);
+        imshow(DTnor, 'Parent', handles.axes10);
+        tempDT = MEDT2(DT);
+        [m, n]=size(DT);
+        EDT=zeros(m,n);
+        
+        EDT(10:m-10, 10:n/2)=  tempDT(10:m-10,10:n/2);
+        
+        imshow(tempDT, 'Parent', handles.axes11);
+%         imshow(EDT, 'Parent', handles.axes12);
+        colormap('jet');
+
+        [Xli, Yli]=XYpoints(EDT,255);
+       
+        b1 = Yli\Xli;
+        
+
+
+            if b1<0.0
+            angulo = atan(b1)*180 +180
+            else
+            angulo = atan(b1)*180 -180
+            end
+
+        BWaling = imrotate(BW, angulo);
+        imshow(BWaling, 'Parent', handles.axes12);
+%        tempang=-90-angulo;
+
+        
+%         plot(Xli,Yli,'.', 'Parent', handles.axes12);
+
+%         plot(handles.axes3, Xli, Yli,'.');
+%         plot(handles.axes4,sin(1:0.01:25.99));
         else 
      print('')
         end
         
     case 2
-         B = uigetfile('*.ply;*.pcd;');
-         B=pcread(B);
-         pcshow(B);
+          model = uigetfile('*.ply;*.pcd;');
+        if ~isequal(model, 0)
+        A=pcread(model);
+        pcshow(A);
+        
+        xi=A.Location(:,1);
+        yi=A.Location(:,2);
+        zi=A.Location(:,3);
+        
+        maxzi=max(zi);
+        zi= maxzi-zi;
+        end
 
 end
 
