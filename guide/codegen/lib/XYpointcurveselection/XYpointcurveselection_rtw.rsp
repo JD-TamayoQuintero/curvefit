@@ -1,0 +1,12 @@
+XYpointcurveselection.obj
+XYpointcurveselection_data.obj
+XYpointcurveselection_emxAPI.obj
+XYpointcurveselection_emxutil.obj
+XYpointcurveselection_initialize.obj
+XYpointcurveselection_terminate.obj
+find.obj
+mean.obj
+rtGetInf.obj
+rtGetNaN.obj
+rt_nonfinite.obj
+unique.obj
