@@ -18,15 +18,16 @@ I = curv3Dto2D(newimage(:,1),newimage(:,2),newimage(:,3),newimage(:,4),0.1);
 %figure, histogram(I);
 In=im2double(I);
  In = normalizar(In);
-% figure, imhist(In);
+% %  figure, imhist(In);
 
 % rango
 h = curv3Dto2D(newimage(:,1),newimage(:,2),newimage(:,4),newimage(:,3),0.1);
-%figure, imhist(h);
+% figure, imhist(h);
 hn=im2double(h);
 hn = normalizar(hn);
 
-%figure, imhist(hn);
+% figure, imhist(hn);
+% imshow(hn)
 
 
 %altura
