@@ -12,7 +12,7 @@ minY= min(Y);
 Y=Y-minY;    %corro al origen
 
 % maxMEDTY = max(MEDTY)
-Yscale = (Y/maxX)*600;  % normalizo en funcion de x para manterner relacion de aspecto
+Yscale = (Y/maxX)*600; % normalizo en funcion de x para manterner relacion de aspecto
 
 
 end

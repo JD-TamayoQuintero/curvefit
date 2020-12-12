@@ -35,10 +35,17 @@ mint = min(minp); maxt= max(maxp);
 
 %medidas reales del modelo se asume las medidas en micrómetros
 mdreal=(abs(mint)+abs(maxt));
+% x(1)= mint ;
+% x(2)= maxt ;
+% y(1)= mint ;
+% y(2)= maxt ;
+
 x(1)= mint ;
 x(2)= maxt ;
 y(1)= mint ;
 y(2)= maxt ;
+z(1)= 0;
+z(2)= 0;
 
 %pasamos de micrómetros a mm
 %tres = ((mdreal/1000)) ;
