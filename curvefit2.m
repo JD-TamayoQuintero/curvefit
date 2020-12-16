@@ -3,14 +3,14 @@ close all
 
  cd images-3M
 
-name='Max_3M_tapered.png';
+% name='Max_3M_tapered.png';
 % name='Max_3M_ovoidV2.png';
 % name= 'Max_3M_square.png';
 % 
 
 % name='Man_3M_tapered.png';
 % name='Man_3M_ovoid.png';
-% name= 'Man_3M_square.png';
+name= 'Man_3M_square.png';
 
 % cd arch_orthoaid
 
@@ -52,24 +52,29 @@ BW = imrotate(BWskel,90);
 % BW = imrotate(BW,90)
 
 
-[X, Y] = XYpoints(BW,0);
-[X, Y] = XYpointscale(X, Y);
+[Xx, Yy] = XYpoints(BW,0);
+[X, Y] = XYpointscale(Xx, Yy);
 
 
 X= round(X);
 Y= round(Y);
 
 %% 
-[points] = XYpointcurveselection(Y)
+[points] = XYpointcurveselection(Y);
 
 %%
 
-max_XXsqu=X(points);
-max_YYsqu=Y(points);
+man_XX_squ=X(points);
+man_YY_squ=Y(points);
 % 
-[fitresult, gof] =createFits(max_XXsqu, max_YYsqu);
+[fitresult, gof] =createFits(man_XX_squ, man_YY_squ);
 
-
+man_XX_squ=(Xx);
+man_YY_squ=(Yy);
+max_man_squ_x=max(man_XX_squ);
+min_man_squ_x=min(man_XX_squ);
+max_man_squ_y=max(man_YY_squ);
+min_man_squ_y=min(man_YY_squ);
 
 %%
 

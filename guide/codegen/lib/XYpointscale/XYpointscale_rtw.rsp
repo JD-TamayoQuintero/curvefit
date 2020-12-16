@@ -1,0 +1,9 @@
+XYpointscale.obj
+XYpointscale_data.obj
+XYpointscale_emxAPI.obj
+XYpointscale_emxutil.obj
+XYpointscale_initialize.obj
+XYpointscale_terminate.obj
+rtGetInf.obj
+rtGetNaN.obj
+rt_nonfinite.obj

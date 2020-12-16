@@ -100,10 +100,13 @@ switch popup_sel_index
         
         xi=A.Location(:,1);
         yi=A.Location(:,2);
-        zi=A.Location(:,3);
+        zii=A.Location(:,3);
         
-        minzi=min(zi); zi= minzi-zi;
+        minzi=min(zii); zi= minzi-zii;
         maxzi=max(zi); zi= maxzi-zi;
+        
+%       minzi=min(zii); zi= minzi-zii;
+%       maxzi=max(zi); zi= maxzi-zi;
         
         Image = range3Dto2D( xi,yi,zi, 0.5);
         Image=im2double(Image); Imagenor = normalizar(Image);
@@ -111,7 +114,9 @@ switch popup_sel_index
         colormap('jet');
         level=0.7; % para orthoada dilatar o no usar umbral
 
-        BW = im2bw(Imagenor,level); %#ok<IM2BW>
+        BW = imbinarize(Imagenor,level);
+        
+        BW =maskconncomp(BW);
 %       BW = imrotate(BW,-90);
         imshow(BW, 'Parent', handles.axes9);
 %       BW1= imcomplement(BW);
@@ -122,39 +127,342 @@ switch popup_sel_index
         [m, n]=size(DT);
         EDT=zeros(m,n);
         
-        EDT(10:m-10, 10:n/2)=  tempDT(10:m-10,10:n/2);
+        EDT(10:m-10, 10:n-10)=  tempDT(10:m-10,10:n-10);
         
-        imshow(tempDT, 'Parent', handles.axes11);
+        imshow(EDT, 'Parent', handles.axes11);
 %         imshow(EDT, 'Parent', handles.axes12);
         colormap('jet');
 
         [Xli, Yli]=XYpoints(EDT,255);
        
-        b1 = Yli\Xli;
+        b1 = Yli\Xli
         
-
-
-            if b1<0.0
-            angulo = atan(b1)*180 +180
-            else
-            angulo = atan(b1)*180 -180
-            end
+        if b1 == 0.0
+         angulo = atan(b1)*180 
+        end
+        
+        if b1 > 0.0
+        angulo = atan(b1)*180 -180
+        end
+                
+         if b1 < 0.0
+         angulo = -atan(b1)*180 +180
+         end
+        
+            
 
         BWaling = imrotate(BW, angulo);
         imshow(BWaling, 'Parent', handles.axes12);
-%        tempang=-90-angulo;
+        
+        tempang=angulo;
+        Imagealing = imrotate(Imagenor,tempang);
+ 
+        BWrange = (BWaling.*Imagealing);  [m,n]=size(BWrange);
+
+        imshow(  BWrange, 'Parent', handles.axes13);
+%         colormap('jet')
+        
+        BWrange1 = imrotate(BWrange, 90); newimage0=zeros(m, n);
+        left=BWrange1(:,1:n/2); [newimageleft]=MEDT2(left);
+        rigth=BWrange1(:,n/2+1:n); [newimageright]=MEDT2(rigth);
+
+        newimage0(:,1:n/2)=newimageleft; newimage0(:,n/2+1:n)=newimageright;         
+%         newimage0  = imrotate(newimage0, -90); %prueba  
+%         imshow( newimage0, 'Parent', handles.axes14);
+        
+        %%
+        
+%          BWrange = imrotate(BWrange, 90);  %prueba
+        
+        [m,n]=size(BWrange);
+        
+        newimage1=zeros(m, n);
+
+        left=BWrange(:,1:n/2);
+        [newimageleft]=MEDT2(left);
+
+        rigth=BWrange(:,n/2+1:n);
+        [newimageright]=MEDT2(rigth);
+
+        newimage1(:,1:n/2)=newimageleft;
+        newimage1(:,n/2+1:n)=newimageright;
+         
+        newimage0  = imrotate(newimage0, -90); %prueba
+        
+        imshow(newimage1, 'Parent', handles.axes14);
+        imshow(newimage0, 'Parent', handles.axes15);
+        imshow(newimage0+newimage1, 'Parent', handles.axes16);
+        
+        [MEDTXx, MEDTYx]=XYpoints(newimage0,255);
+        [MEDTXy, MEDTYy]=XYpoints(newimage1,255);
+        
+        XX = [MEDTXx', MEDTXy'];
+        YY = [MEDTYx', MEDTYy'];
+        
+        relacion_x_ori= abs(max(XX) - min(XX));
+        relacion_y_ori= abs(max(YY) - min(YY));
+
+        relacion_xy_ori=relacion_y_ori/relacion_x_ori
 
         
-%         plot(Xli,Yli,'.', 'Parent', handles.axes12);
+        
 
-%         plot(handles.axes3, Xli, Yli,'.');
-%         plot(handles.axes4,sin(1:0.01:25.99));
+       [XX, YY] = XYpointscalemean(YY, XX);
+%         XX= round((XX)); YY= round((YY));
+        plot(XX, YY,'.', 'Parent', handles.axes17);
+ 
+        newrgb(:,:,1)= (newimage0+newimage1)*255;
+        newrgb(:,:,2)= BWrange;
+        newrgb(:,:,3)= (newimage0+newimage1)*255;
+        
+        imshow(newrgb, 'Parent', handles.axes18);
+        
+
+        
+        
+
+myString = sprintf('Angulo : %2f', angulo);
+set(handles.angulo, 'String', myString);
+
+%%  CUADRADO
+
+man_XX_squ = [72,110,146,269,255,241,223,203,177,516,480,445,413,389,367,349,333,321,40,550];
+man_YY_squ = [108,66,40,0,2,4,8,14,24,108,66,40,24,14,8,4,2,0,175,175];
+
+max_man_squ_x=357;
+max_man_squ_y=365;
+min_man_squ_x=56;
+min_man_squ_y=22;
+
+
+
+relacion_x_squ= abs(max_man_squ_x - min_man_squ_x);
+relacion_y_squ= abs(max_man_squ_y - min_man_squ_y);
+
+relacion_xy_squ=relacion_y_squ/relacion_x_squ
+
+[man_XX_squ, man_YY_squ ] = XYpointscalemean(man_XX_squ, man_YY_squ);
+
+% Initialize arrays to store fits and goodness-of-fit.
+fitresult_man_XX_squ = cell( 1, 1 );
+gof_man_XX_squ = struct( 'sse', cell( 1, 1 ), ...
+    'rsquare', [], 'dfe', [], 'adjrsquare', [], 'rmse', [] );
+
+% Fit: 'polynomial6'.
+[xData, yData] = prepareCurveData( man_XX_squ, man_YY_squ*relacion_xy_squ);
+
+% Set up fittype and options.
+ft = fittype( 'poly6' );
+
+% Fit model to data.
+[fitresult_man_XX_squ{1}, gof_man_XX_squ(1)] = fit( xData, yData, ft);
+
+% % [points] = newXYpointcurveselection(XX)
+% 
+% [YY] = YY(points);
+% [XX] = XX(points);
+
+% Compare against validation data.
+[xValidation, yValidation] = prepareCurveData(XX, YY*relacion_xy_ori);
+residual = yValidation - fitresult_man_XX_squ{1}( xValidation );
+nNaN = nnz( isnan( residual ) );
+residual(isnan( residual )) = [];
+sse_squ = norm( residual )^2;
+rmse_squ = sqrt( sse_squ/length( residual ) );
+
+% Create a figure for the plots.
+figure(1);
+
+% Plot fit with data.
+
+subplot( 1, 1, 1 );
+h = plot( fitresult_man_XX_squ{1}, xData, yData);
+
+% plot(h, 'Parent', handles.axes2);
+% Add validation data to plot.
+hold on
+h(end+1) = plot( xValidation, yValidation, 'g.', 'MarkerFaceColor', 'w');
+hold off
+legend( h, 'man_YY_squ vs. man_XX_squ', 'polynomial6', 'man_YY_squ vs. man_XX_squ', 'Location', 'NorthEast', 'Interpreter', 'none' );
+% Label axes
+% xlabel( 'man_XX_squ', 'Interpreter', 'none' );
+% ylabel( 'man_YY_squ', 'Interpreter', 'none' );
+grid off
+
+saveas(figure(1),'man_XX_squ.png');
+
+IM_squ=imread('man_XX_squ.png');
+imshow(IM_squ, 'Parent', handles.axes2);
+
+myString = sprintf( 'CUADRADO \n SSE : %f\n RMSE : %f\n', sse_squ, rmse_squ);
+set(handles.text3, 'String', myString);
+
+%% Triangular   tapered
+
+
+man_XX_tap = [306,115,153,181,280,262,254,238,221,203,491,455,427,405,387,370,356,346,332,72,534];
+man_YY_tap = [0,109,66,40,0,2,4,8,14,24,109,66,40,24,14,8,4,2,0,177,177];
+
+
+max_man_tap_x=534; max_man_tap_y=177; min_man_tap_x=72; min_man_tap_y=0;
+
+relacion_x_tap= abs(max_man_tap_x - min_man_tap_x);
+relacion_y_tap= abs(max_man_tap_y - min_man_tap_y);
+
+relacion_xy_tap=relacion_x_tap/relacion_y_tap
+
+
+
+[man_XX_tap, man_YY_tap ] = XYpointscalemean(man_XX_tap, man_YY_tap);
+
+% Initialize arrays to store fits and goodness-of-fit.
+fitresult_man_XX_tap = cell( 1, 1 );
+gof_man_XX_tap = struct( 'sse', cell( 1, 1 ), ...
+    'rsquare', [], 'dfe', [], 'adjrsquare', [], 'rmse', [] );
+
+% Fit: 'polynomial6'.
+[xData, yData] = prepareCurveData( man_XX_tap, man_YY_tap );
+
+% Set up fittype and options.
+ft = fittype( 'poly6' );
+
+% Fit model to data.
+[fitresult_man_XX_tap{1}, gof_man_XX_tap(1)] = fit( xData, yData, ft);
+
+% % [points] = newXYpointcurveselection(XX)
+% 
+% [YY] = YY(points);
+% [XX] = XX(points);
+
+% Compare against validation data.
+[xValidation, yValidation] = prepareCurveData(XX, YY);
+residual = yValidation - fitresult_man_XX_tap{1}( xValidation );
+nNaN = nnz( isnan( residual ) );
+residual(isnan( residual )) = [];
+sse_tap = norm( residual )^2;
+rmse_tap = sqrt( sse_tap/length( residual ) );
+
+
+% Create a figure for the plots.
+figure(2);
+
+% Plot fit with data.
+
+subplot( 1, 1, 1 );
+h = plot( fitresult_man_XX_tap{1}, xData, yData);
+
+% plot(h, 'Parent', handles.axes2);
+% Add validation data to plot.
+hold on
+h(end+1) = plot( xValidation, yValidation, 'g.', 'MarkerFaceColor', 'w');
+hold off
+legend( h, 'man_YY_squ vs. man_XX_squ', 'polynomial6', 'man_YY_squ vs. man_XX_squ', 'Location', 'NorthEast', 'Interpreter', 'none' );
+% Label axes
+% xlabel( 'man_XX_squ', 'Interpreter', 'none' );
+% ylabel( 'man_YY_squ', 'Interpreter', 'none' );
+grid off
+
+saveas(figure(2),'man_XX_tap.png');
+
+IM_squ=imread('man_XX_tap.png');
+imshow(IM_squ, 'Parent', handles.axes3);
+
+myString = sprintf( 'TRIANGULAR \n SSE : %f\n RMSE : %f\n', sse_tap, rmse_tap);
+set(handles.text2, 'String', myString);
+%% OVALADA
+
+
+
+man_XX_ova = [301,102,139,170,276,260,253,239,220,197,500,465,434,407,386,367,347,341,324,68,534];
+man_YY_ova = [0,104,64,39,0,2,4,8,14,23,104,64,39,23,14,8,4,2,0,170,170];
+% 
+% 
+% % max_man_ova_x=534;
+% % max_man_ova_y=170;
+% % min_man_ova_x=68;
+% % min_man_ova_y=0;
+% 
+% man_XX_ova = [301,68,102,139,170,260,253,239,220,197,534,500,465,407,386,367,347,341,434,31,569];
+% man_YY_ova = [0,170,104,64,39,2,4,8,14,23,170,104,64,23,14,8,4,2,39,276,276];
+% 
+% 
+max_man_ova_x=357;
+max_man_ova_y=369;
+min_man_ova_x=46;
+min_man_ova_y=27;
+
+relacion_x_ova= abs(max_man_ova_x - min_man_ova_x);
+relacion_y_ova= abs(max_man_ova_y - min_man_ova_y);
+
+relacion_xy_ova=relacion_y_ova/relacion_x_ova
+
+
+
+[man_XX_ova, man_YY_ova ] = XYpointscalemean(man_XX_ova, man_YY_ova);
+
+% Initialize arrays to store fits and goodness-of-fit.
+fitresult_man_XX_tap = cell( 1, 1 );
+gof_man_XX_tap = struct( 'sse', cell( 1, 1 ), ...
+    'rsquare', [], 'dfe', [], 'adjrsquare', [], 'rmse', [] );
+
+% Fit: 'polynomial6'.
+[xData, yData] = prepareCurveData( man_XX_ova, man_YY_ova*relacion_xy_ova );
+
+% Set up fittype and options.
+ft = fittype( 'poly6' );
+
+% Fit model to data.
+[fitresult_man_XX_ova{1}, gof_man_XX_ova(1)] = fit( xData, yData, ft);
+
+% % [points] = newXYpointcurveselection(XX)
+% 
+% [YY] = YY(points);
+% [XX] = XX(points);
+
+% Compare against validation data.
+[xValidation, yValidation] = prepareCurveData(XX, YY*relacion_xy_ori);
+residual = yValidation - fitresult_man_XX_ova{1}( xValidation );
+nNaN = nnz( isnan( residual ) );
+residual(isnan( residual )) = [];
+sse_ova = norm( residual )^2;
+rmse_ova = sqrt( sse_ova/length( residual ) );
+
+% Create a figure for the plots.
+figure(3);
+
+% Plot fit with data.
+
+subplot( 1, 1, 1 );
+h = plot( fitresult_man_XX_ova{1}, xData, yData);
+
+% plot(h, 'Parent', handles.axes2);
+% Add validation data to plot.
+hold on
+h(end+1) = plot( xValidation, yValidation, 'g.', 'MarkerFaceColor', 'w');
+hold off
+legend( h, 'man_YY_squ vs. man_XX_squ', 'polynomial6', 'man_YY_squ vs. man_XX_squ', 'Location', 'NorthEast', 'Interpreter', 'none' );
+% Label axes
+% xlabel( 'man_XX_squ', 'Interpreter', 'none' );
+% ylabel( 'man_YY_squ', 'Interpreter', 'none' );
+grid off
+
+saveas(figure(2),'man_XX_ova.png');
+
+IM_ova=imread('man_XX_ova.png');
+imshow(IM_ova, 'Parent', handles.axes4);
+
+myString = sprintf( 'OVALADA \n SSE : %f\n RMSE : %f\n', sse_ova, rmse_ova);
+set(handles.text1, 'String', myString);
+
+
+
+%% 
         else 
-     print('')
         end
         
     case 2
-          model = uigetfile('*.ply;*.pcd;');
+      
+        model = uigetfile('*.ply;*.pcd;');
         if ~isequal(model, 0)
         A=pcread(model);
         pcshow(A);
