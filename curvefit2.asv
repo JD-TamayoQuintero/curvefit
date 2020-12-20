@@ -52,8 +52,11 @@ BW = imrotate(BWskel,90);
 % BW = imrotate(BW,90)
 
 
-[X, Y] = XYpoints(BW,0);
-[X, Y] = XYpointscale(X, Y);
+[Xx, Yy] = XYpoints(BW,0);
+% [X, Y] = XYpointscale(Xx, Yy);
+
+[X, Y] = XYpointscale(Xx, Yy);
+
 
 
 X= round(X);
@@ -64,18 +67,36 @@ Y= round(Y);
 
 %%
 
-man_XX_squ=X(points);
-man_YY_squ=Y(points);
+man_XX_sq_21=X(points);
+man_YY_squ_21=Y(points);
 % 
-[fitresult, gof] =createFits(man_XX_squ, man_YY_squ);
-
-man_XX_squ=X(points)';
-man_YY_squ=Y(points)';
-max_man_squ=max(man_XX_squ);
-min=min(man_XX_squ);
-
+[fitresult, gof] =createFits(man_XX_squ_21, man_YY_squ_21)
+man_XX_squ=(Xx);
+man_YY_squ=(Yy);
+max_man_squ_x=max(man_XX_squ);
+min_man_squ_x=min(man_XX_squ);
+max_man_squ_y=max(man_YY_squ);
+min_man_squ_y=min(man_YY_squ);
 
 %%
+man_XX_squ_21=man_XX_squ_21';
+man_YY_squ_21=man_YY_squ_21';
+
+
+% man_XX_squ_21=X(points);
+% man_YY_squ_21=Y(points);
+% % 
+% [fitresult, gof] =createFits(man_XX_squ_21, man_YY_squ_21)
+% man_XX_squ=(Xx);
+% man_YY_squ=(Yy);
+% max_man_squ_x=max(man_XX_squ);
+% min_man_squ_x=min(man_XX_squ);
+% max_man_squ_y=max(man_YY_squ);
+% min_man_squ_y=min(man_YY_squ);
+% 
+% %%
+% man_XX_squ_21=man_XX_squ_21';
+% man_YY_squ_21=man_YY_squ_21';
 
 
 % cd arch_orthoaid
