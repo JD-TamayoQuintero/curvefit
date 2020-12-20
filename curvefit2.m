@@ -9,8 +9,8 @@ close all
 % 
 
 % name='Man_3M_tapered.png';
-% name='Man_3M_ovoid.png';
-name= 'Man_3M_square.png';
+name='Man_3M_ovoid.png';
+% name= 'Man_3M_square.png';
 
 % cd arch_orthoaid
 
@@ -53,7 +53,10 @@ BW = imrotate(BWskel,90);
 
 
 [Xx, Yy] = XYpoints(BW,0);
+% [X, Y] = XYpointscale(Xx, Yy);
+
 [X, Y] = XYpointscale(Xx, Yy);
+
 
 
 X= round(X);
@@ -64,19 +67,53 @@ Y= round(Y);
 
 %%
 
-man_XX_squ=X(points);
-man_YY_squ=Y(points);
-% 
-[fitresult, gof] =createFits(man_XX_squ, man_YY_squ);
 
-man_XX_squ=(Xx);
-man_YY_squ=(Yy);
-max_man_squ_x=max(man_XX_squ);
-min_man_squ_x=min(man_XX_squ);
-max_man_squ_y=max(man_YY_squ);
-min_man_squ_y=min(man_YY_squ);
+
+man_XX_ova_21=X(points);
+man_YY_ova_21=Y(points);
+% 
+[fitresult, gof] =createFits(man_XX_ova_21, man_YY_ova_21)
+man_XX_ova=(Xx);
+man_YY_ova=(Yy);
+max_man_ova_x=max(man_XX_ova);
+min_man_ova_x=min(man_XX_ova);
+max_man_ova_y=max(man_YY_ova);
+min_man_ova_y=min(man_YY_ova);
 
 %%
+man_XX_ova_21=man_XX_ova_21';
+man_YY_ova_21=man_YY_ova_21'
+% 
+% man_XX_tap_21=X(points);
+% man_YY_tap_21=Y(points);
+% % 
+% [fitresult, gof] =createFits(man_XX_tap_21, man_YY_tap_21)
+% man_XX_tap=(Xx);
+% man_YY_tap=(Yy);
+% max_man_tap_x=max(man_XX_tap);
+% min_man_tap_x=min(man_XX_tap);
+% max_man_tap_y=max(man_YY_tap);
+% min_man_tap_y=min(man_YY_tap);
+% 
+% %%
+% man_XX_tap_21=man_XX_tap_21';
+% man_YY_tap_21=man_YY_tap_21';
+
+
+% man_XX_squ_21=X(points);
+% man_YY_squ_21=Y(points);
+% % 
+% [fitresult, gof] =createFits(man_XX_squ_21, man_YY_squ_21)
+% man_XX_squ=(Xx);
+% man_YY_squ=(Yy);
+% max_man_squ_x=max(man_XX_squ);
+% min_man_squ_x=min(man_XX_squ);
+% max_man_squ_y=max(man_YY_squ);
+% min_man_squ_y=min(man_YY_squ);
+% 
+% %%
+% man_XX_squ_21=man_XX_squ_21';
+% man_YY_squ_21=man_YY_squ_21';
 
 
 % cd arch_orthoaid
