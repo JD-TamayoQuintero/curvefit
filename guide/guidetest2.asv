@@ -90,9 +90,9 @@ cla;
 
 popup_sel_index = get(handles.popupmenu1, 'Value');
 switch popup_sel_index
+    
     case 1   %Mandibular(poly6)
-        
-        
+        warning('off')
         model = uigetfile('*.ply;*.pcd;');
         if ~isequal(model, 0)
         A=pcread(model);
@@ -219,9 +219,19 @@ switch popup_sel_index
         
         imshow(newrgb, 'Parent', handles.axes1);
         
-
+        yz= YY*relacion_xy_ori ;
         
+        [mz nz]= size(yz)
         
+        for i=1:nz
+       if  yz(i) > 1.2
+           YYx(i) = NaN
+       else
+           YYx(i)= yz(i)
+       end
+        end
+           
+         
 
 myString = sprintf('Angulo : %2f', angulo);
 set(handles.angulo, 'String', myString);
@@ -230,6 +240,8 @@ set(handles.angulo, 'String', myString);
 
 man_XX_squ = [295,40,72,110,146,255,241,223,203,177,550,516,480,413,389,367,349,333,445,12,580];
 man_YY_squ = [0,175,108,66,40,2,4,8,14,24,175,108,66,24,14,8,4,2,40,285,285];
+
+
 
 max_man_squ_x=357;
 max_man_squ_y=365;
@@ -249,7 +261,7 @@ gof_man_XX_squ = struct( 'sse', cell( 1, 1 ), ...
     'rsquare', [], 'dfe', [], 'adjrsquare', [], 'rmse', [] );
 
 % Fit: 'polynomial6'.
-[xData, yData] = prepareCurveData( man_XX_squ, man_YY_squ*relacion_xy_squ);
+[xData, yData] = prepareCurveData( (man_XX_squ*0.8)+0.1, (man_YY_squ*relacion_xy_squ)+0.05);
 
 % Set up fittype and options.
 ft = fittype( 'poly6' );
@@ -263,7 +275,7 @@ ft = fittype( 'poly6' );
 % [XX] = XX(points);
 
 % Compare against validation data.
-[xValidation, yValidation] = prepareCurveData(XX, YY*relacion_xy_ori);
+[xValidation, yValidation] = prepareCurveData(XX, YYx);
 residual = yValidation - fitresult_man_XX_squ{1}( xValidation );
 nNaN = nnz( isnan( residual ) );
 residual(isnan( residual )) = [];
@@ -304,12 +316,15 @@ man_XX_tap = [306,72,115,153,181,262,254,238,221,203,534,491,455,405,387,370,356
 man_YY_tap = [0,177,109,66,40,2,4,8,14,24,177,109,66,24,14,8,4,2,40,288,288];
 
 
-max_man_tap_x=357; max_man_tap_y=336; min_man_tap_x=38; min_man_tap_y=28;
+max_man_tap_x=336; 
+max_man_tap_y=378; 
+min_man_tap_x=38; 
+min_man_tap_y=28;
 
 relacion_x_tap= abs(max_man_tap_x - min_man_tap_x);
 relacion_y_tap= abs(max_man_tap_y - min_man_tap_y);
 
-relacion_xy_tap=relacion_x_tap/relacion_y_tap
+relacion_xy_tap=relacion_y_tap/relacion_x_tap
 
 
 
@@ -321,7 +336,7 @@ gof_man_XX_tap = struct( 'sse', cell( 1, 1 ), ...
     'rsquare', [], 'dfe', [], 'adjrsquare', [], 'rmse', [] );
 
 % Fit: 'polynomial6'.
-[xData, yData] = prepareCurveData( man_XX_tap, man_YY_tap*relacion_xy_tap );
+[xData, yData] = prepareCurveData( (man_XX_tap*0.8)+0.1, (man_YY_tap*relacion_xy_tap)+0.05 );
 
 % Set up fittype and options.
 ft = fittype( 'poly6' );
@@ -335,7 +350,7 @@ ft = fittype( 'poly6' );
 % [XX] = XX(points);
 
 % Compare against validation data.
-[xValidation, yValidation] = prepareCurveData(XX, YY*relacion_xy_ori);
+[xValidation, yValidation] = prepareCurveData(XX, YYx);
 residual = yValidation - fitresult_man_XX_tap{1}( xValidation );
 nNaN = nnz( isnan( residual ) );
 residual(isnan( residual )) = [];
@@ -373,12 +388,12 @@ set(handles.text2, 'String', myString);
 
 
 
-man_XX_ova = [301,102,139,170,276,260,253,239,220,197,500,465,434,407,386,367,347,341,324,68,534];
-man_YY_ova = [0,104,64,39,0,2,4,8,14,23,104,64,39,23,14,8,4,2,0,170,170];
+man_XX_ova = [301,68,102,139,170,260,253,239,220,197,534,500,465,407,386,367,347,341,434,31,569];
+man_YY_ova = [0,170,104,64,39,2,4,8,14,23,170,104,64,23,14,8,4,2,39,276,276];
 
 % 
 % 
-max_man_ova_x=357;
+max_man_ova_x=37;
 max_man_ova_y=369;
 min_man_ova_x=46;
 min_man_ova_y=27;
@@ -398,7 +413,7 @@ gof_man_XX_tap = struct( 'sse', cell( 1, 1 ), ...
     'rsquare', [], 'dfe', [], 'adjrsquare', [], 'rmse', [] );
 
 % Fit: 'polynomial6'.
-[xData, yData] = prepareCurveData( man_XX_ova, man_YY_ova*relacion_xy_ova );
+[xData, yData] = prepareCurveData( (man_XX_ova*0.8)+0.1, (man_YY_ova*relacion_xy_ova)+0.05);
 
 % Set up fittype and options.
 ft = fittype( 'poly6' );
@@ -412,7 +427,7 @@ ft = fittype( 'poly6' );
 % [XX] = XX(points);
 
 % Compare against validation data.
-[xValidation, yValidation] = prepareCurveData(XX, YY*relacion_xy_ori);
+[xValidation, yValidation] = prepareCurveData(XX, YYx);
 residual = yValidation - fitresult_man_XX_ova{1}( xValidation );
 nNaN = nnz( isnan( residual ) );
 residual(isnan( residual )) = [];
@@ -432,13 +447,13 @@ h = plot( fitresult_man_XX_ova{1}, xData, yData);
 hold on
 h(end+1) = plot( xValidation, yValidation, 'g.', 'MarkerFaceColor', 'w');
 hold off
-legend( h, 'man_YY_squ vs. man_XX_squ', 'polynomial6', 'man_YY_squ vs. man_XX_squ', 'Location', 'NorthEast', 'Interpreter', 'none' );
+legend( h, 'mandibula plantilla ovalda', 'polynomial6', 'modelo ', 'Location', 'NorthEast', 'Interpreter', 'none' );
 % Label axes
 % xlabel( 'man_XX_squ', 'Interpreter', 'none' );
 % ylabel( 'man_YY_squ', 'Interpreter', 'none' );
 grid off
 
-saveas(figure(2),'man_XX_ova.png');
+saveas(figure(3),'man_XX_ova.png');
 
 IM_ova=imread('man_XX_ova.png');
 imshow(IM_ova, 'Parent', handles.axes4);
